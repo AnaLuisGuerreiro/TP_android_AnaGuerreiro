@@ -42,11 +42,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     private fun welcomeText(){
-        // Get username
-        val userName = intent.getStringExtra("username")
+        // Get username with
+        val userName = intent.getStringExtra("username")?.split(" ")?.joinToString(" ") { it.capitalize() }
 
         // Modify the welcome text
         if(userName == null){

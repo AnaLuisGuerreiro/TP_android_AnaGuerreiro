@@ -2,6 +2,7 @@ package com.example.tp_android_anaguerreiro
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -25,29 +26,37 @@ class TripDetailsActivity : AppCompatActivity() {
 
         getAllInfo()
 
-            binding.back.setOnClickListener {
-                val origin = intent.getStringExtra("origin")
-                val destination = intent.getStringExtra("destination")
-                val departureDate = intent.getStringExtra("departureDate")
-                val returnDate = intent.getStringExtra("returnDate")
-                val tripPrice = intent.getStringExtra("tripPrice")
+        binding.back.setOnClickListener {
+            val origin = intent.getStringExtra("origin")
+            val destination = intent.getStringExtra("destination")
+            val departureDate = intent.getStringExtra("departureDate")
+            val returnDate = intent.getStringExtra("returnDate")
+            val tripPrice = intent.getStringExtra("tripPrice")
 
-                var i = Intent().apply {
-                    putExtra("origin", origin)
-                    putExtra("destination", destination)
-                    putExtra("departureDate", departureDate)
-                    putExtra("returnDate", returnDate)
-                    putExtra("tripPrice", tripPrice)
-                }
-                setResult(1,intent)
-                finish()
+            val resultIntent = Intent().apply {
+                putExtra("origin", origin)
+                putExtra("destination", destination)
+                putExtra("departureDate", departureDate)
+                putExtra("returnDate", returnDate)
+                putExtra("tripPrice", tripPrice)
             }
+            setResult(RESULT_OK, resultIntent)
+            finish()
+        }
 
-            binding.confirmTrip.setOnClickListener {  }
+        binding.confirmTrip.setOnClickListener {
+            val destination = intent.getStringExtra("destination")
 
+            // Redirect to main view
+            val toMain = Intent(this, MainActivity::class.java)
+            startActivity(toMain)
+
+            // Message of confirmation
+            Toast.makeText(this, "Your trip to $destination is confirmed!", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    private fun getAllInfo(){
+    private fun getAllInfo() {
         // User inputs
         val origin = intent.getStringExtra("origin")
         val destination = intent.getStringExtra("destination")
@@ -56,16 +65,12 @@ class TripDetailsActivity : AppCompatActivity() {
         val tripPrice = intent.getStringExtra("tripPrice")
 
         // Text views to complete with user inputs
-        binding.originTextView.setText("${origin}")
-        binding.destinationTextView.setText("${destination}")
-        binding.departureDateTextView.setText("${departureDate}")
-        binding.returnDateTextView.setText("${returnDate}")
-        binding.tripPriceTextView.setText("${tripPrice}")
-        setResult(1,intent)
-        finish()
-
-
-
-
+        binding.originTextView.text = origin
+        binding.destinationTextView.text = destination
+        binding.departureDateTextView.text = departureDate
+        binding.returnDateTextView.text = returnDate
+        if (tripPrice != null) {
+            binding.tripPriceTextView.text = if (tripPrice.isNotEmpty()) "$tripPrice€" else ""
+        }
     }
 }

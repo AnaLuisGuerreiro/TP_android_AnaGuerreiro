@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginLeft="30dp"
         android:fontFamily="@font/calift_bold"
         android:textSize="40sp"
@@ -140,7 +140,7 @@
                 android:ems="10"
                 android:backgroundTint="@color/white"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="15dp"
                 android:fontFamily="@font/calift_bold"
                 tools:ignore="TextFields" />
 
@@ -168,7 +168,7 @@
                 android:ems="10"
                 android:backgroundTint="@color/white"
                 android:textSize="20sp"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="15dp"
                 android:fontFamily="@font/calift_bold"
                 tools:ignore="TextFields" />
 
@@ -233,6 +233,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginRight="120dp"
+            android:background="@drawable/buttons"
             android:fontFamily="@font/calift_bold"
             android:text="Back"
             android:textSize="20sp" />
@@ -241,6 +242,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:background="@drawable/buttons"
             android:fontFamily="@font/calift_bold"
             android:text="Confirm"
             android:textSize="20sp" />

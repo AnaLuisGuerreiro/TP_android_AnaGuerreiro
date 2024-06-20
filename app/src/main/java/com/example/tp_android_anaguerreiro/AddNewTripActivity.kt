@@ -2,16 +2,14 @@ package com.example.tp_android_anaguerreiro
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.tp_android_anaguerreiro.databinding.ActivityAddNewTripBinding
 
 class AddNewTripActivity : AppCompatActivity() {
-    private lateinit var result: ActivityResultLauncher<Intent>
 
     private val binding by lazy {
         ActivityAddNewTripBinding.inflate(layoutInflater)
@@ -27,38 +25,49 @@ class AddNewTripActivity : AppCompatActivity() {
             insets
         }
 
-        result = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data = result.data
-                if (data != null) {
-                    binding.origin.setText(data.getStringExtra("origin"))
-                    binding.destination.setText(data.getStringExtra("destination"))
-                    binding.departureDate.setText(data.getStringExtra("departureDate"))
-                    binding.returnDate.setText(data.getStringExtra("returnDate"))
-                    binding.tripPrice.setText(data.getStringExtra("tripPrice"))
+        binding.addTrip.setOnClickListener {
+            // Text fields for a new trip
+            val origin = capitalizeFirstLetter(binding.origin.text.toString())
+            val destination = capitalizeFirstLetter(binding.destination.text.toString())
+            val departureDate = capitalizeFirstLetter(binding.departureDate.text.toString())
+            val returnDate = capitalizeFirstLetter(binding.returnDate.text.toString())
+            val tripPrice = capitalizeFirstLetter(binding.tripPrice.text.toString())
+
+            // Checking if any field is empty, only adds with all info
+            when {
+                origin.isEmpty() -> {
+                    Toast.makeText(this, "Please enter the origin.", Toast.LENGTH_SHORT).show()
+                }
+                destination.isEmpty() -> {
+                    Toast.makeText(this, "Please enter the destination.", Toast.LENGTH_SHORT).show()
+                }
+                departureDate.isEmpty() -> {
+                    Toast.makeText(this, "Please enter the departure date.", Toast.LENGTH_SHORT).show()
+                }
+                returnDate.isEmpty() -> {
+                    Toast.makeText(this, "Please enter the return date.", Toast.LENGTH_SHORT).show()
+                }
+                tripPrice.isEmpty() -> {
+                    Toast.makeText(this, "Please enter the price of the trip.", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val i = Intent(this, TripDetailsActivity::class.java).apply {
+                        putExtra("origin", origin)
+                        putExtra("destination", destination)
+                        putExtra("departureDate", departureDate)
+                        putExtra("returnDate", returnDate)
+                        putExtra("tripPrice", tripPrice)
+                    }
+                    startActivity(i)
                 }
             }
+
+
         }
-
-        binding.addTrip.setOnClickListener {
-            val origin = binding.origin.text.toString()
-            val destination = binding.destination.text.toString()
-            val departureDate = binding.departureDate.text.toString()
-            val returnDate = binding.returnDate.text.toString()
-            val tripPrice = binding.tripPrice.text.toString()
-
-
-            val i = Intent(this,TripDetailsActivity::class.java).apply{
-                putExtra("origin", origin)
-                putExtra("destination", destination)
-                putExtra("departureDate", departureDate)
-                putExtra("returnDate", returnDate)
-                putExtra("tripPrice", tripPrice)
-            }
-
-            result.launch(i)
-        }
-
-
     }
+
+    private fun capitalizeFirstLetter(text: String): String {
+        return text.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+    }
+
 }
